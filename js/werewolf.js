@@ -1,33 +1,33 @@
-var appPrefix = 'https://roll-werewolf.firebaseio.com/v1/'
-$('#messageInput').keypress(function (e) {
-  if (e.keyCode == 13) {
-    console.log('sent a message')
-    var name = person ? person.name : 'Anonymous';
-    var text = $('#messageInput').val();
-    firebaseDataRef.push({name: name, text: text, profileUrl: person.profPicUrl});
-    $('#messageInput').val('');
+var appRef = new Firebase('https://roll-werewolf.firebaseio.com/v1/');
+
+appRef.onAuth(function(authData){
+  if (authData=== null){
+    person = null;
+    setUserInfo(person);
+    displayView('login');
+  } else{
+    person = new Person(authData);
+    setUserInfo(person);
+    displayView('messageBox'); 
   }
 });
-function initDataRef(room){
+
+function changeRoom(room){
   if (room === ''){
-    var firebaseDataRef = new Firebase(appPrefix + 'custom-room/General');
+    room = 'General'
   }
-  else{
-    var firebaseDataRef = new Firebase(appPrefix + 'custom-room/'+room);
-  }
-  firebaseDataRef.off('child_added');
-  firebaseDataRef.on('child_added', function(snapshot) {
+  var roomPath = 'custom-room/' + room;
+  appRef.child(roomPath)
+    .off('child_added');
+  appRef.child(roomPath)
+    .on('child_added', function(snapshot) {
     var message = snapshot.val();
-    displayChatMessage(message.name, message.text, message.profileUrl); 
+    displayChatMessage(message.name, message.text, message.profileUrl);
 });
-  return firebaseDataRef
+  return roomPath;  
 }
 
-var roomRef = initDataRef('');
-
-
 function displayChatMessage(name, text, profileUrl) {
-
   var chip = $("<div/>").attr('class', 'chip')
       .append($('<img/>').attr('src', profileUrl ? profileUrl : ''))
       .append($('<em/>').text(name+': '));
@@ -36,19 +36,29 @@ function displayChatMessage(name, text, profileUrl) {
       .prepend(chip)
         .appendTo($('#messagesDiv'));
   $('#messagesDiv')[0].scrollTop = $('#messagesDiv')[0].scrollHeight;
-};  
+};
+
+function displayView(id){
+  var views = ['login', 'messageBox'];
+  for (i in views){
+    $('#'+views[i]).hide();
+  }
+  $('#'+id).fadeIn(1000);
+}
+function firebaseLoginEventBind(id, provider){
+  $('#'+id).on('click', function(e){
+  appRef.authWithOAuthPopup(provider, function(error, authData) {
+  if (error) {
+    console.log("Login Failed!", error);
+  } else {
+    console.log("Authenticated successfully with payload:", authData);
+  }
+  });
+});
+}
 
 
-
-$('#roomSelect').click(function(e){
-  $("#messagesDiv").empty()
-  var room =$('#roomInput').val();
-  firebaseDataRef = initDataRef(room);
-})
-
-
-
-var Person = function(authData){
+function Person(authData){
   var provider = authData.provider;
   this.name = authData[provider].displayName;
   this.profPicUrl = authData[provider].profileImageURL;
@@ -56,11 +66,43 @@ var Person = function(authData){
 };
 
 function setUserInfo(person){
-  $('#nameInput').val(person.name);
+  if (person){
+    $('#nameInput').val(person.name);
+  }
 }
-userRef = new Firebase( appPrefix + 'user/')
 
-var cachedAuth = firebaseDataRef.getAuth();
+var roomPath = '';
+$(window).load(function(e){
+  roomPath = changeRoom($("#roomInput").val());
+});
+
+$('#messageInput').keypress(function (e) {
+  if (e.keyCode == 13) {
+    console.log('sent a message')
+    var name = person ? person.name : 'Anonymous';
+    var text = $('#messageInput').val();
+
+    appRef.child(roomPath.split('/')).push({name: name, text: text, profileUrl: person.profPicUrl});
+    $('#messageInput').val('');
+  }
+});
+
+
+
+
+
+  
+
+
+
+$('#roomSelect').click(function(e){
+  $("#messagesDiv").empty()
+  var room =$('#roomInput').val();
+  roomPath = changeRoom(room);
+})
+
+
+var cachedAuth = appRef.getAuth();
 if (cachedAuth){
   // User is already logged in.
   console.log('Detected logged in user.');
@@ -73,33 +115,17 @@ if (cachedAuth){
   displayView('login');
 }
 
-function displayView(id){
-  var views = ['login', 'messageBox'];
-  for (i in views){
-    $('#'+views[i]).hide();
-  }
-  $('#'+id).fadeIn(1000);
-}
-function firebaseLoginEventBind(id, provider){
-  $('#'+id).on('click', function(e){
-  firebaseDataRef.authWithOAuthPopup(provider, function(error, authData) {
-  if (error) {
-    console.log("Login Failed!", error);
-  } else {
-    console.log("Authenticated successfully with payload:", authData);
-    displayView('messageBox');    
-    person = new Person(authData);
-    setUserInfo(person);
-  }
-
-  });
-});
-}
 
 $("#logOut").on('click', function(event){
-    firebaseDataRef.unauth();
+    appRef.unauth();
     displayView('login');
 });
+
+//(function($){
+//  $(function(){
+//    $('.button-collapse').sideNav();
+//  });
+//})(jQuery);
 
 firebaseLoginEventBind("gplus", "google");
 firebaseLoginEventBind("facebook", "facebook");

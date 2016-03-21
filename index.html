@@ -13,30 +13,36 @@
      <link rel='stylesheet' href='css/site.css'>
   </head>
   <body class='indigo lighten-4'>
-    <div class="indigo darken-2 white-text" style="font-size:3rem;">
-      RollWolf
-      <div id ="logOut" class="right valign-center">
-        <i class="material-icons" > perm_identity </i> 
+    
+      <div class="container">
+        <ul>
+          <li>
+            <span id="roomSelect">
+              <i class="material-icons"> group_work</i>
+            </span>
+          <a href="#">Navbar Link</a>
+        </li>
+        <li id="logOut">
+          <i class="material-icons" > perm_identity </i> Log out
+        </li> 
+      </ul>
+
+      <div id="login" class="section indigo z-depth-4">
+          <h5 class="center-align"> Please log in with one of the services </h3>
+          <div class="center-align">
+            <img id="facebook" src="https://static.xx.fbcdn.net/rsrc.php/yl/r/H3nktOa7ZMg.ico" alt="Log in with Facebook">
+            <img id="gplus" src="https://www.google.com/images/branding/product/ico/googleg_lodp.ico" alt="Log in with Google">
+        </div>
       </div>
-    </div>
+
+      <div id="messageBox" class="section indigo lighten-1 z-depth-4" style="margin-top:20px;">
+        <div id='messagesDiv'></div>
+        <button id='roomSelect'>Change room</button>
+        <input type='text' id='nameInput' placeholder='Name'>
+        <input type='text' id='messageInput' placeholder='Message'>
 
 
-    <div id="login" class="container indigo z-depth-4">
-        <h5 class="center-align"> Please log in with one of the services </h3>
-        <div class="center-align">
-          <img id="facebook" src="https://static.xx.fbcdn.net/rsrc.php/yl/r/H3nktOa7ZMg.ico" alt="Log in with Facebook">
-          <img id="gplus" src="https://www.google.com/images/branding/product/ico/googleg_lodp.ico" alt="Log in with Google">
       </div>
-    </div>
-
-    <div id="messageBox" class="container indigo lighten-1 z-depth-4" style="margin-top:20px;">
-      <div id='messagesDiv'></div>
-      <input type='text' id='roomInput' placeholder='Room'>
-      <button id='roomSelect'>Change room</button>
-      <input type='text' id='nameInput' placeholder='Name'>
-      <input type='text' id='messageInput' placeholder='Message'>
-
-
     </div>
     <script src='js/materialize.js'></script>
     <script src='js/werewolf.js'></script>

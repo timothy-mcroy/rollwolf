@@ -4,11 +4,25 @@
 	margin-top: 1%;
 }
 
-#logOut i {
+#header i {
 	font-size: 4rem;
 	cursor: pointer;
 }
 
+#header {
+	font-size: 3rem;
+}
+
 #login img {
 	cursor: pointer;
+}
+
+nav a i{
+	color: #fff;
+
+}
+
+nav a {
+	font-size: 36px;
+
 }
