@@ -1,0 +1,45 @@
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+    <meta content='width=device-width, initial-scale=1' name='viewport'><meta>
+    <meta content='IE=edge' http-equiv='X-UA-Compatible'></meta>
+    <meta content='no' name='msapplication-tap-highlight'></meta>
+
+    <link rel='stylesheet' href='css/materialize.css'>
+    <script src='https://cdn.firebase.com/js/client/2.2.1/firebase.js'></script>
+    <script src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js'></script>
+     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+     <link rel="icon" type='image/png' href="Wolfclawsmia.png" >
+     <link rel='stylesheet' href='css/site.css'>
+  </head>
+  <body class='indigo lighten-4'>
+    <div class="indigo darken-2 white-text" style="font-size:3rem;">
+      RollWolf
+      <div id ="logOut" class="right valign-center">
+        <i class="material-icons" > perm_identity </i> 
+      </div>
+    </div>
+
+
+    <div id="login" class="container indigo z-depth-4">
+        <h5 class="center-align"> Please log in with one of the services </h3>
+        <div class="center-align">
+          <img id="facebook" src="https://static.xx.fbcdn.net/rsrc.php/yl/r/H3nktOa7ZMg.ico" alt="Log in with Facebook">
+          <img id="gplus" src="https://www.google.com/images/branding/product/ico/googleg_lodp.ico" alt="Log in with Google">
+      </div>
+    </div>
+
+    <div id="messageBox" class="container indigo lighten-1 z-depth-4" style="margin-top:20px;">
+      <div id='messagesDiv'></div>
+      <input type='text' id='roomInput' placeholder='Room'>
+      <button id='roomSelect'>Change room</button>
+      <input type='text' id='nameInput' placeholder='Name'>
+      <input type='text' id='messageInput' placeholder='Message'>
+
+
+    </div>
+    <script src='js/materialize.js'></script>
+    <script src='js/werewolf.js'></script>
+
+  </body>
+</html>
