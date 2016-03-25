@@ -13,35 +13,37 @@
      <link rel='stylesheet' href='css/site.css'>
   </head>
   <body class='indigo lighten-4'>
-    
-      <div class="container">
+    <div class="container ">
+      <div class="u-auth">
+          <img src="" class="circle responsive-img" id="profile-pic">
+        <span id="room"></span>
+
         <ul>
           <li>
             <span id="roomSelect">
-              <i class="material-icons"> group_work</i>
+              <i class="material-icons"> group_work</i> Change room
             </span>
-          <a href="#">Navbar Link</a>
+            <input id="roomInput" placeholder="Room">
         </li>
         <li id="logOut">
           <i class="material-icons" > perm_identity </i> Log out
         </li> 
       </ul>
-
-      <div id="login" class="section indigo z-depth-4">
-          <h5 class="center-align"> Please log in with one of the services </h3>
-          <div class="center-align">
+      </div>
+      <div id="login" class="section indigo z-depth-4 ">
+          <h5 class="center-align "> Please log in with one of the services </h3>
+          <div class="center-align ">
             <img id="facebook" src="https://static.xx.fbcdn.net/rsrc.php/yl/r/H3nktOa7ZMg.ico" alt="Log in with Facebook">
             <img id="gplus" src="https://www.google.com/images/branding/product/ico/googleg_lodp.ico" alt="Log in with Google">
         </div>
       </div>
-
-      <div id="messageBox" class="section indigo lighten-1 z-depth-4" style="margin-top:20px;">
-        <div id='messagesDiv'></div>
-        <button id='roomSelect'>Change room</button>
-        <input type='text' id='nameInput' placeholder='Name'>
-        <input type='text' id='messageInput' placeholder='Message'>
-
-
+      <div class="container">
+        <div id="messageBox" class="u-auth section indigo lighten-1 z-depth-4" style="margin-top:20px;">
+          <div id='messagesDiv'></div>
+          <span id='nameInput'></span>
+          <input type='text' id='messageInput' placeholder='Message'>
+        </div>
+      </div>
       </div>
     </div>
     <script src='js/materialize.js'></script>

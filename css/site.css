@@ -13,10 +13,12 @@
 	font-size: 3rem;
 }
 
-#login img {
+#login img , #logout{
 	cursor: pointer;
 }
-
+#profile-pic {
+	max-width: 30px;
+}
 nav a i{
 	color: #fff;
 

@@ -5,10 +5,12 @@ appRef.onAuth(function(authData){
     person = null;
     setUserInfo(person);
     displayView('login');
+    $('.u-auth').hide();
   } else{
     person = new Person(authData);
     setUserInfo(person);
     displayView('messageBox'); 
+    $('.u-auth').show()
   }
 });
 
@@ -16,7 +18,9 @@ function changeRoom(room){
   if (room === ''){
     room = 'General'
   }
-  var roomPath = 'custom-room/' + room;
+  var cleanedRoomString = room.split('/').join('');
+  var roomPath = 'custom-room/' + cleanedRoomString;
+  console.log('roomPath is ' + roomPath);
   appRef.child(roomPath)
     .off('child_added');
   appRef.child(roomPath)
@@ -24,6 +28,7 @@ function changeRoom(room){
     var message = snapshot.val();
     displayChatMessage(message.name, message.text, message.profileUrl);
 });
+  $("#room").text(cleanedRoomString);
   return roomPath;  
 }
 
@@ -66,33 +71,24 @@ function Person(authData){
 };
 
 function setUserInfo(person){
-  if (person){
-    $('#nameInput').val(person.name);
-  }
+  person = person ? person : {name: '', profPicUrl: ''};
+  $('#nameInput').text(person.name);
+  $("#profile-pic").attr('src', person.profPicUrl).append(person.name);
+  
 }
 
 var roomPath = '';
-$(window).load(function(e){
-  roomPath = changeRoom($("#roomInput").val());
-});
+
 
 $('#messageInput').keypress(function (e) {
   if (e.keyCode == 13) {
     console.log('sent a message')
     var name = person ? person.name : 'Anonymous';
     var text = $('#messageInput').val();
-
-    appRef.child(roomPath.split('/')).push({name: name, text: text, profileUrl: person.profPicUrl});
+    appRef.child(roomPath).push({name: name, text: text, profileUrl: person.profPicUrl});
     $('#messageInput').val('');
   }
 });
-
-
-
-
-
-  
-
 
 
 $('#roomSelect').click(function(e){
@@ -107,13 +103,12 @@ if (cachedAuth){
   // User is already logged in.
   console.log('Detected logged in user.');
   displayView('messageBox');
-  console.log($('#login'));
   person = new Person(cachedAuth);
-  setUserInfo(person);
 } else{
   console.log('Detected user that is not logged in.');
   displayView('login');
 }
+setUserInfo(person);
 
 
 $("#logOut").on('click', function(event){
@@ -121,11 +116,9 @@ $("#logOut").on('click', function(event){
     displayView('login');
 });
 
-//(function($){
-//  $(function(){
-//    $('.button-collapse').sideNav();
-//  });
-//})(jQuery);
-
 firebaseLoginEventBind("gplus", "google");
 firebaseLoginEventBind("facebook", "facebook");
+
+$(window).load(function(e){
+  roomPath = changeRoom($("#roomInput").val());
+});
